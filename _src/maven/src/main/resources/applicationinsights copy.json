@@ -1,0 +1,23 @@
+{
+  "connectionString": "",
+  "role": {
+    "name": "maven-spring-boot-app",
+    "instance": "local-instance"
+  },
+  "selfDiagnostics": {
+    "level": "INFO"
+  },
+  "instrumentation": {
+    "logging": {
+      "enabled": true
+    },
+    "micrometer": {
+      "enabled": true
+    }
+  },
+  "preview": {
+    "sampling": {
+      "percentage": 100
+    }
+  }
+}
