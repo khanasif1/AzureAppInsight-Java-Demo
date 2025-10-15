@@ -1,0 +1,41 @@
+# Docker ignore file for Java Spring Boot application
+
+# Maven build artifacts
+target/
+!target/app.jar
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker files
+Dockerfile*
+docker-compose*
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Node modules (if any)
+node_modules/
+
+# Application Insights local files
+applicationinsights.log
+
+# Maven wrapper jar (we'll download fresh)
+.mvn/wrapper/maven-wrapper.jar
