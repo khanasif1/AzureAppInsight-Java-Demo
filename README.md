@@ -495,7 +495,7 @@ docker logs <container-id>
 # All-in-one startup command
 
 cd ~C:\_code\personal_github~\AzureAppInsight-Java-Demo\_src\maven;
-$env:JAVA_HOME = "C:\Users\asifkhan\.jdk\jdk-21.0.8" ; $env:APPLICATIONINSIGHTS_CONNECTION_STRING = "InstrumentationKey=8a3054d4-0f22-466d-abc8-fbeb45d6a104;IngestionEndpoint=https://australiaeast-1.in.applicationinsights.azure.com/;LiveEndpoint=https://australiaeast.livediagnostics.monitor.azure.com/;ApplicationId=0568e94c-8c3e-4d1a-a3b1-1e2c4314cd2d" ; cd "c:\Users\asifkhan\Downloads\ApplicationInsights-Java\maven" ; & "C:\Users\asifkhan\.jdk\jdk-21.0.8\bin\java.exe" -javaagent:target/agent/applicationinsights-agent.jar -jar target/app.jar --server.port=8080
+$env:JAVA_HOME = "C:\Users\asifkhan\.jdk\jdk-21.0.8" ; $env:APPLICATIONINSIGHTS_CONNECTION_STRING = "InstrumentationKey={Enter here}" ; cd "c:\Users\asifkhan\Downloads\ApplicationInsights-Java\maven" ; & "C:\Users\asifkhan\.jdk\jdk-21.0.8\bin\java.exe" -javaagent:target/agent/applicationinsights-agent.jar -jar target/app.jar --server.port=8080
 
 # Development mode (auto-restart)
 .\mvnw.cmd spring-boot:run
