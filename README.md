@@ -2,17 +2,186 @@
 
 A comprehensive Java Spring Boot demo application showcasing Azure Application Insights integration with custom telemetry, automated deployment, and containerization.
 
-## 🏗️ Architecture
+## 🏗️ Architecture Overview
 
-This demo provides:
-- **Spring Boot Web Application** with Thymeleaf templating
-- **Application Insights Java Agent** for automatic telemetry collection
-- **OpenTelemetry API** for custom telemetry (events, metrics, spans)
-- **Docker containerization** for easy deployment
-- **AKS deployment configurations** for production use
-- **Interactive web interface** for testing telemetry
+```mermaid
+graph TB
+    %% User Layer
+    User[👤 User/Developer] --> Browser[🌐 Web Browser]
+    Browser --> LB[⚖️ Load Balancer]
+    
+    %% Deployment Options
+    LB --> |Option 1| Local[🖥️ Local Development]
+    LB --> |Option 2| Docker[🐳 Docker Container]
+    LB --> |Option 3| K8S[☸️ Kubernetes/AKS]
+    
+    %% Application Layer
+    Local --> SpringApp[🍃 Spring Boot Application]
+    Docker --> SpringApp
+    K8S --> SpringApp
+    
+    %% Application Components
+    SpringApp --> WebUI[🎨 Interactive Web UI<br/>Modern CSS & JavaScript]
+    SpringApp --> RestAPI[🔗 REST API Endpoints<br/>/api, /health, /error]
+    SpringApp --> Controller[🎮 Demo Controller<br/>Telemetry Generation]
+    
+    %% Telemetry Collection
+    SpringApp --> AIAgent[📊 Application Insights Agent<br/>v3.7.4]
+    Controller --> CustomTelemetry[📈 Custom Telemetry<br/>Events, Metrics, Traces]
+    
+    %% Configuration
+    SpringApp --> Config[⚙️ Configuration<br/>applicationinsights.json<br/>application.properties]
+    
+    %% Azure Services
+    AIAgent --> |HTTPS| AIService[☁️ Azure Application Insights<br/>Australia East]
+    CustomTelemetry --> |HTTPS| AIService
+    
+    AIService --> Portal[📱 Azure Portal<br/>Live Metrics, Logs, Dashboards]
+    AIService --> Alerts[🚨 Alerts & Monitoring]
+    AIService --> Analytics[📊 Analytics & KQL Queries]
+    
+    %% Container Registry
+    Docker --> DockerHub[🐳 Docker Hub<br/>khanasif1/azure-appinsights-java-demo]
+    
+    %% Kubernetes Resources
+    K8S --> K8SNamespace[📦 Namespace: appinsightdemo]
+    K8SNamespace --> K8SDeployment[🚀 Deployment<br/>2 Replicas]
+    K8SNamespace --> K8SService[🔗 LoadBalancer Service<br/>Port 80→8082]
+    K8SNamespace --> K8SConfig[⚙️ ConfigMap & Secret<br/>Environment Variables]
+    
+    %% Development Tools
+    Developer[👨‍💻 Developer] --> IDE[💻 VS Code/IntelliJ]
+    IDE --> Maven[📦 Maven Build<br/>Dependencies & Packaging]
+    Maven --> JAR[📄 Executable JAR<br/>app.jar]
+    
+    %% CI/CD Pipeline
+    Developer --> Git[📚 Git Repository<br/>GitHub]
+    Git --> Build[🔨 Build Process<br/>Maven Package]
+    Build --> Test[🧪 Unit Tests<br/>Integration Tests]
+    Test --> Package[📦 Docker Build]
+    Package --> Deploy[🚀 Deployment<br/>Local/K8S/Docker Hub]
+    
+    %% Monitoring & Observability
+    AIService --> Metrics[📈 Performance Metrics<br/>Response Time, Throughput]
+    AIService --> Logs[📋 Application Logs<br/>Structured Logging]
+    AIService --> Traces[🔍 Distributed Tracing<br/>Request Flow]
+    AIService --> Dependencies[🔗 Dependency Tracking<br/>External Calls]
+    
+    %% Health & Probes
+    K8SDeployment --> HealthCheck[💚 Health Checks<br/>Liveness & Readiness Probes]
+    HealthCheck --> |/api/health| RestAPI
+    
+    %% Styling
+    classDef azure fill:#0078d4,stroke:#005ba1,stroke-width:2px,color:#fff
+    classDef spring fill:#6db33f,stroke:#4a8b2d,stroke-width:2px,color:#fff
+    classDef docker fill:#2496ed,stroke:#1a75d9,stroke-width:2px,color:#fff
+    classDef k8s fill:#326ce5,stroke:#2558d6,stroke-width:2px,color:#fff
+    classDef user fill:#ff6b6b,stroke:#e63946,stroke-width:2px,color:#fff
+    classDef monitoring fill:#f39c12,stroke:#d68910,stroke-width:2px,color:#fff
+    
+    class AIService,Portal,Alerts,Analytics azure
+    class SpringApp,WebUI,RestAPI,Controller spring
+    class Docker,DockerHub,Package docker
+    class K8S,K8SNamespace,K8SDeployment,K8SService,K8SConfig k8s
+    class User,Browser,Developer user
+    class Metrics,Logs,Traces,Dependencies,HealthCheck monitoring
+```
 
-## 📋 Prerequisites
+## 🔄 Data Flow Architecture
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant W as Web UI
+    participant S as Spring Boot App
+    participant A as AI Agent
+    participant C as Custom Telemetry
+    participant AI as Azure App Insights
+    participant P as Azure Portal
+    
+    U->>W: Access Application
+    W->>S: HTTP Request
+    
+    Note over S,A: Automatic Telemetry Collection
+    S->>A: HTTP Request/Response
+    A->>AI: Send Telemetry (HTTPS)
+    
+    Note over S,C: Custom Telemetry Generation
+    S->>C: Generate Custom Events
+    C->>C: Create Metrics & Traces
+    C->>AI: Send Custom Telemetry (HTTPS)
+    
+    Note over AI,P: Real-time Monitoring
+    AI->>P: Live Metrics Stream
+    AI->>P: Logs & Analytics
+    
+    S->>W: HTTP Response
+    W->>U: Rendered Page
+    
+    Note over AI: Data Processing & Storage
+    AI->>AI: Store Telemetry Data
+    AI->>AI: Generate Insights
+    
+    Note over P: Monitoring & Alerts
+    P->>P: Display Dashboards
+    P->>P: Trigger Alerts (if configured)
+```
+
+## 🛠️ Technology Stack
+
+```mermaid
+mindmap
+  root((Azure Application Insights<br/>Java Demo))
+    (Frontend)
+      Modern Web UI
+        HTML5/CSS3
+        JavaScript ES6+
+        Responsive Design
+        Interactive API Testing
+    (Backend)
+      Spring Boot 3.4.0
+        Java 21/25
+        Thymeleaf Templates
+        Spring Web MVC
+        REST API Endpoints
+        Health Actuator
+    (Telemetry)
+      Application Insights Agent 3.7.4
+        Automatic Instrumentation
+        HTTP Request Tracking
+        Exception Monitoring
+        Performance Metrics
+      Custom Telemetry
+        OpenTelemetry API
+        Custom Events
+        Custom Metrics
+        Distributed Tracing
+    (Deployment)
+      Docker
+        Multi-stage Build
+        Eclipse Temurin JRE
+        Optimized Images
+        Docker Hub Registry
+      Kubernetes
+        AKS Integration
+        ConfigMaps & Secrets
+        Health Probes
+        Load Balancing
+        Horizontal Scaling
+    (Azure Services)
+      Application Insights
+        Live Metrics
+        Application Map
+        Performance Monitoring
+        Log Analytics
+      Azure Monitor
+        Alerts & Notifications
+        Dashboards
+        KQL Queries
+        Workbooks
+```
+
+## 📊 Telemetry Features
 
 - **Java 17 or higher** (tested with Java 25)
 - **Maven 3.6+** or use included Maven wrapper
